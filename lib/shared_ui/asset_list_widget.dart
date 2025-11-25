@@ -12,6 +12,8 @@ class AssetListWidget extends StatelessWidget {
       context: context,
       isScrollControlled: true,
       backgroundColor: Colors.transparent,
+      isDismissible: true,
+      enableDrag: true,
       builder: (context) => const FilterBottomSheet(),
     );
   }
@@ -52,6 +54,11 @@ class AssetListWidget extends StatelessWidget {
                               borderRadius: BorderRadius.circular(30),
                               borderSide: BorderSide.none,
                             ),
+                            contentPadding: EdgeInsets.symmetric(
+                              vertical: 8,
+                              horizontal: 16,
+                            ),
+                            isDense: true,
                           ),
                         ),
                       ),

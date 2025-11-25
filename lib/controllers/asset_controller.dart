@@ -10,13 +10,17 @@ class AssetController extends ChangeNotifier {
   }
 
   void initialize() {
-    // Dummy data for now
+    // Dummy data with BTC price snapshots
+    // Using a snapshot BTC price of 60,000,000 FCFA for calculation
+    const double snapshotBtcPrice = 60000000.0;
+
     _allAssets = [
       Asset(
         id: '1',
         name: 'Bitcoin',
         symbol: 'BTC',
-        price: 95000.0,
+        basePrice: 95000.0,
+        btcPriceSnapshot: snapshotBtcPrice,
         imageUrl: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png',
         description: 'The original cryptocurrency.',
         quantity: 100,
@@ -29,7 +33,8 @@ class AssetController extends ChangeNotifier {
         id: '2',
         name: 'Ethereum',
         symbol: 'ETH',
-        price: 3500.0,
+        basePrice: 3500.0,
+        btcPriceSnapshot: snapshotBtcPrice,
         imageUrl: 'https://cryptologos.cc/logos/ethereum-eth-logo.png',
         description: 'The smart contract platform.',
         quantity: 500,
@@ -42,7 +47,8 @@ class AssetController extends ChangeNotifier {
         id: '3',
         name: 'Solana',
         symbol: 'SOL',
-        price: 150.0,
+        basePrice: 150.0,
+        btcPriceSnapshot: snapshotBtcPrice,
         imageUrl: 'https://cryptologos.cc/logos/solana-sol-logo.png',
         description: 'High performance blockchain.',
         quantity: 200,

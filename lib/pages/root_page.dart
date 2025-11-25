@@ -1,10 +1,15 @@
 import 'package:shop_verse/controllers/theme_controller.dart';
+import 'package:shop_verse/controllers/auth_controller.dart';
 import 'package:shop_verse/widgets/lottie_animator.dart';
 import 'package:shop_verse/widgets/menu.dart';
 import 'package:shop_verse/pages/home_page.dart';
 import 'package:shop_verse/pages/profile_page.dart';
+import 'package:shop_verse/pages/admin/admin_dashboard.dart';
+import 'package:shop_verse/pages/merchant/merchant_dashboard.dart';
+import 'package:shop_verse/pages/client/store_list_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
+import 'package:provider/provider.dart';
 
 // @@@@@@@@@@@@ STATEFUL @@@@@@@@@@@@@@@@
 
@@ -227,10 +232,33 @@ class RootPageState extends State<RootPage>
   /// - Widget: Scaffold containing the complete animated interface
   @override
   Widget build(BuildContext context) {
-    // Current page based on selected tab
-    final currentPage = _selectedTabIndex == 0
-        ? HomePage(onMenuPressed: toggleMenu)
-        : const ProfilePage();
+    final authController = Provider.of<AuthController>(context);
+
+    // Determine current page based on user role and selected tab
+    Widget currentPage;
+
+    if (authController.isAdmin) {
+      // Admin sees only admin dashboard
+      currentPage = const AdminDashboard();
+    } else if (authController.isMerchant) {
+      // Merchant sees only merchant dashboard
+      currentPage = const MerchantDashboard();
+    } else {
+      // Client sees Home/Stores/Profile tabs
+      switch (_selectedTabIndex) {
+        case 0:
+          currentPage = HomePage(onMenuPressed: toggleMenu);
+          break;
+        case 1:
+          currentPage = const StoreListPage();
+          break;
+        case 2:
+          currentPage = const ProfilePage();
+          break;
+        default:
+          currentPage = HomePage(onMenuPressed: toggleMenu);
+      }
+    }
 
     return Scaffold(
       body: Stack(
@@ -278,22 +306,31 @@ class RootPageState extends State<RootPage>
         ],
       ),
 
-      // Bottom Navigation Bar
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedTabIndex,
-        onTap: (index) {
-          setState(() {
-            _selectedTabIndex = index;
-          });
-        },
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
-          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
-        ],
-        backgroundColor: Theme.of(context).colorScheme.primary,
-        selectedItemColor: Theme.of(context).colorScheme.secondary,
-        unselectedItemColor: Colors.white54,
-      ),
+      // Bottom Navigation Bar (only for clients)
+      bottomNavigationBar: authController.isClient
+          ? BottomNavigationBar(
+              currentIndex: _selectedTabIndex,
+              onTap: (index) {
+                setState(() {
+                  _selectedTabIndex = index;
+                });
+              },
+              items: const [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.store),
+                  label: 'Stores',
+                ),
+                BottomNavigationBarItem(
+                  icon: Icon(Icons.person),
+                  label: 'Profile',
+                ),
+              ],
+              backgroundColor: Theme.of(context).colorScheme.primary,
+              selectedItemColor: Theme.of(context).colorScheme.secondary,
+              unselectedItemColor: Colors.white54,
+            )
+          : null,
     );
   }
 

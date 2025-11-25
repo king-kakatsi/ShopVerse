@@ -30,15 +30,50 @@ class AssetCard extends StatelessWidget {
             // Image
             ClipRRect(
               borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-              child: Image.network(
-                asset.imageUrl,
-                height: 150,
+              child: Container(
+                height: 200,
                 width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  height: 150,
-                  color: Colors.grey[300],
-                  child: Icon(Icons.broken_image, size: 50),
+                color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                child: Image.network(
+                  asset.imageUrl,
+                  height: 200,
+                  width: double.infinity,
+                  fit: BoxFit.contain,
+                  loadingBuilder: (context, child, loadingProgress) {
+                    if (loadingProgress == null) return child;
+                    return Center(
+                      child: CircularProgressIndicator(
+                        value: loadingProgress.expectedTotalBytes != null
+                            ? loadingProgress.cumulativeBytesLoaded /
+                                  loadingProgress.expectedTotalBytes!
+                            : null,
+                      ),
+                    );
+                  },
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    height: 200,
+                    color: Theme.of(context).colorScheme.surfaceContainerHigh,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.currency_bitcoin,
+                          size: 80,
+                          color: Theme.of(context).colorScheme.primary,
+                        ),
+                        SizedBox(height: 8),
+                        Text(
+                          asset.symbol,
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(
+                                color: Theme.of(
+                                  context,
+                                ).colorScheme.onSurfaceVariant,
+                              ),
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
               ),
             ),

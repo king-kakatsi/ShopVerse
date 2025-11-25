@@ -19,24 +19,49 @@ class AssetListWidget extends StatelessWidget {
             padding: const EdgeInsets.only(top: 20),
             child: Column(
               children: [
-                // Search Bar
+                // Search Bar with Filter Button
                 Padding(
                   padding: const EdgeInsets.symmetric(
                     horizontal: 16,
                     vertical: 10,
                   ),
-                  child: TextField(
-                    onChanged: (value) => assetController.search(value),
-                    decoration: InputDecoration(
-                      hintText: "Search assets...",
-                      prefixIcon: Icon(Icons.search),
-                      filled: true,
-                      fillColor: Theme.of(context).colorScheme.surfaceContainer,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(30),
-                        borderSide: BorderSide.none,
+                  child: Row(
+                    children: [
+                      // Search TextField
+                      Expanded(
+                        child: TextField(
+                          onChanged: (value) => assetController.search(value),
+                          decoration: InputDecoration(
+                            hintText: "Search assets...",
+                            prefixIcon: Icon(Icons.search),
+                            filled: true,
+                            fillColor: Theme.of(
+                              context,
+                            ).colorScheme.surfaceContainer,
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(30),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                        ),
                       ),
-                    ),
+
+                      SizedBox(width: 12),
+
+                      // Filter Button
+                      Container(
+                        decoration: BoxDecoration(
+                          color: Theme.of(context).colorScheme.surfaceContainer,
+                          shape: BoxShape.circle,
+                        ),
+                        child: IconButton(
+                          icon: Icon(Icons.filter_list),
+                          onPressed: () {
+                            // TODO: Implement filter functionality
+                          },
+                        ),
+                      ),
+                    ],
                   ),
                 ),
 

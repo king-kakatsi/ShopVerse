@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:shop_verse/shared_ui/asset_list_widget.dart';
 
 class HomePage extends StatelessWidget {
-  const HomePage({super.key});
+  final VoidCallback onMenuPressed;
+
+  const HomePage({super.key, required this.onMenuPressed});
 
   @override
   Widget build(BuildContext context) {
@@ -11,6 +13,7 @@ class HomePage extends StatelessWidget {
         title: const Text('ShopVerse'),
         centerTitle: true,
         actions: [
+          IconButton(icon: const Icon(Icons.menu), onPressed: onMenuPressed),
           IconButton(
             icon: const Icon(Icons.admin_panel_settings),
             onPressed: () {

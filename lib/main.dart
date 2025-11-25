@@ -4,7 +4,7 @@ import 'package:get_it/get_it.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_verse/controllers/asset_controller.dart';
 import 'package:shop_verse/controllers/theme_controller.dart';
-import 'package:shop_verse/pages/home_page.dart';
+import 'package:shop_verse/pages/root_page.dart';
 import 'package:shop_verse/themes/app_theme.dart';
 
 void main() async {
@@ -64,7 +64,7 @@ class MyApp extends StatelessWidget {
       darkTheme: AppTheme.darkTheme,
       themeMode: context.watch<ThemeController>().themeMode,
       initialRoute: '/',
-      routes: {'/': (context) => const HomePage()},
+      routes: {'/': (context) => const RootPage()},
     );
   }
 }

@@ -2,9 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_verse/controllers/asset_controller.dart';
 import 'package:shop_verse/widgets/asset_card.dart';
+import 'package:shop_verse/widgets/filter_bottom_sheet.dart';
 
 class AssetListWidget extends StatelessWidget {
   const AssetListWidget({super.key});
+
+  void _showFilterSheet(BuildContext context) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (context) => const FilterBottomSheet(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,9 +66,7 @@ class AssetListWidget extends StatelessWidget {
                         ),
                         child: IconButton(
                           icon: Icon(Icons.filter_list),
-                          onPressed: () {
-                            // TODO: Implement filter functionality
-                          },
+                          onPressed: () => _showFilterSheet(context),
                         ),
                       ),
                     ],
@@ -75,6 +83,12 @@ class AssetListWidget extends StatelessWidget {
                         asset: asset,
                         onTap: () {
                           // Navigate to details (later)
+                        },
+                        onEdit: () {
+                          // TODO: Implement edit
+                        },
+                        onDelete: () {
+                          // TODO: Implement delete
                         },
                       );
                     },

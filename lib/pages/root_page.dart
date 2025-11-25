@@ -2,6 +2,7 @@ import 'package:shop_verse/controllers/theme_controller.dart';
 import 'package:shop_verse/widgets/lottie_animator.dart';
 import 'package:shop_verse/widgets/menu.dart';
 import 'package:shop_verse/pages/home_page.dart';
+import 'package:shop_verse/pages/profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 
@@ -56,6 +57,11 @@ class RootPageState extends State<RootPage>
   /// Controls whether the slide menu is currently open or closed.
   /// Used to trigger animations and UI state changes.
   bool isMenuOpen = false;
+
+  /// **Selected tab index for bottom navigation**
+  ///
+  /// Controls which page is currently displayed (0 = Home, 1 = Profile).
+  int _selectedTabIndex = 0;
 
   /// **Theme management service**
   ///
@@ -202,10 +208,11 @@ class RootPageState extends State<RootPage>
   /// - Contains the slide-out menu with options
   /// - Semi-transparent background overlay
   ///
-  /// Top layer: AnimatedPositioned HomePage
+  /// Top layer: AnimatedPositioned with current page
   /// - Main application content (ShopVerse interface)
   /// - Animated translation and border radius effects
   /// - Responds to menu toggle animations
+  /// - Switches between Home and Profile pages
   ///
   /// Animation system:
   /// - Uses AnimationController for smooth transitions
@@ -220,6 +227,11 @@ class RootPageState extends State<RootPage>
   /// - Widget: Scaffold containing the complete animated interface
   @override
   Widget build(BuildContext context) {
+    // Current page based on selected tab
+    final currentPage = _selectedTabIndex == 0
+        ? HomePage(onMenuPressed: toggleMenu)
+        : const ProfilePage();
+
     return Scaffold(
       body: Stack(
         children: [
@@ -259,11 +271,28 @@ class RootPageState extends State<RootPage>
 
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(_borderRadius),
-                child: HomePage(onMenuPressed: toggleMenu),
+                child: currentPage,
               ),
             ),
           ),
         ],
+      ),
+
+      // Bottom Navigation Bar
+      bottomNavigationBar: BottomNavigationBar(
+        currentIndex: _selectedTabIndex,
+        onTap: (index) {
+          setState(() {
+            _selectedTabIndex = index;
+          });
+        },
+        items: const [
+          BottomNavigationBarItem(icon: Icon(Icons.home), label: 'Home'),
+          BottomNavigationBarItem(icon: Icon(Icons.person), label: 'Profile'),
+        ],
+        backgroundColor: Theme.of(context).colorScheme.primary,
+        selectedItemColor: Theme.of(context).colorScheme.secondary,
+        unselectedItemColor: Colors.white54,
       ),
     );
   }

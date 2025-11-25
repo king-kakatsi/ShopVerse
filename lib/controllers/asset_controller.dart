@@ -19,6 +19,11 @@ class AssetController extends ChangeNotifier {
         price: 95000.0,
         imageUrl: 'https://cryptologos.cc/logos/bitcoin-btc-logo.png',
         description: 'The original cryptocurrency.',
+        quantity: 100,
+        network: 'BEP20 (BSC)',
+        paymentMethod: 'Momo (VODAPHONE)',
+        vendor: 'user1',
+        createdAt: DateTime.now().subtract(Duration(days: 30)),
       ),
       Asset(
         id: '2',
@@ -27,6 +32,11 @@ class AssetController extends ChangeNotifier {
         price: 3500.0,
         imageUrl: 'https://cryptologos.cc/logos/ethereum-eth-logo.png',
         description: 'The smart contract platform.',
+        quantity: 500,
+        network: 'ERC20 (ETH)',
+        paymentMethod: 'Momo (MTN)',
+        vendor: 'user2',
+        createdAt: DateTime.now().subtract(Duration(days: 240)),
       ),
       Asset(
         id: '3',
@@ -35,6 +45,11 @@ class AssetController extends ChangeNotifier {
         price: 150.0,
         imageUrl: 'https://cryptologos.cc/logos/solana-sol-logo.png',
         description: 'High performance blockchain.',
+        quantity: 200,
+        network: 'SPL (Solana)',
+        paymentMethod: 'Orange Money',
+        vendor: 'user3',
+        createdAt: DateTime.now().subtract(Duration(days: 7)),
       ),
     ];
     assets = List.from(_allAssets);

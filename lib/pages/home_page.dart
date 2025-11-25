@@ -11,15 +11,9 @@ class HomePage extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: const Text('ShopVerse'),
-        centerTitle: true,
+        centerTitle: false,
         actions: [
           IconButton(icon: const Icon(Icons.menu), onPressed: onMenuPressed),
-          IconButton(
-            icon: const Icon(Icons.admin_panel_settings),
-            onPressed: () {
-              // TODO: Navigate to admin dashboard
-            },
-          ),
         ],
       ),
       body: const AssetListWidget(),

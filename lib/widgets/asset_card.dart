@@ -1,11 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:shop_verse/models/asset.dart';
+import 'package:timeago/timeago.dart' as timeago;
 
 class AssetCard extends StatelessWidget {
   final Asset asset;
   final VoidCallback? onTap;
+  final VoidCallback? onEdit;
+  final VoidCallback? onDelete;
 
-  const AssetCard({super.key, required this.asset, this.onTap});
+  const AssetCard({
+    super.key,
+    required this.asset,
+    this.onTap,
+    this.onEdit,
+    this.onDelete,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -13,6 +22,7 @@ class AssetCard extends StatelessWidget {
       onTap: onTap,
       child: Container(
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.surfaceContainer,
           borderRadius: BorderRadius.circular(16),
@@ -27,100 +37,176 @@ class AssetCard extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Image
-            ClipRRect(
-              borderRadius: BorderRadius.vertical(top: Radius.circular(16)),
-              child: Container(
-                height: 200,
-                width: double.infinity,
-                color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                child: Image.network(
-                  asset.imageUrl,
-                  height: 200,
-                  width: double.infinity,
-                  fit: BoxFit.contain,
-                  loadingBuilder: (context, child, loadingProgress) {
-                    if (loadingProgress == null) return child;
-                    return Center(
-                      child: CircularProgressIndicator(
-                        value: loadingProgress.expectedTotalBytes != null
-                            ? loadingProgress.cumulativeBytesLoaded /
-                                  loadingProgress.expectedTotalBytes!
-                            : null,
-                      ),
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) => Container(
-                    height: 200,
+            // Top row: Icon + Name/Quantity + Price
+            Row(
+              children: [
+                // Crypto Icon
+                Container(
+                  width: 60,
+                  height: 60,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
                     color: Theme.of(context).colorScheme.surfaceContainerHigh,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Icon(
-                          Icons.currency_bitcoin,
-                          size: 80,
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        SizedBox(height: 8),
-                        Text(
-                          asset.symbol,
-                          style: Theme.of(context).textTheme.titleLarge
-                              ?.copyWith(
-                                color: Theme.of(
-                                  context,
-                                ).colorScheme.onSurfaceVariant,
-                              ),
-                        ),
-                      ],
+                  ),
+                  child: ClipOval(
+                    child: Image.network(
+                      asset.imageUrl,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) => Icon(
+                        Icons.currency_bitcoin,
+                        size: 30,
+                        color: Theme.of(context).colorScheme.primary,
+                      ),
                     ),
                   ),
                 ),
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
+                SizedBox(width: 12),
+
+                // Name and Quantity
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         asset.name,
-                        style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                      Text(
-                        "\$${asset.price.toStringAsFixed(2)}",
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(
-                              color: Theme.of(context).colorScheme.primary,
                               fontWeight: FontWeight.bold,
+                              color: Theme.of(context).colorScheme.onSurface,
                             ),
+                      ),
+                      SizedBox(height: 4),
+                      Text(
+                        'Quantité ${asset.quantity}\$',
+                        style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 4),
-                  Text(
-                    asset.symbol,
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                ),
+
+                // Price
+                Text(
+                  '${asset.price.toStringAsFixed(1)} FCFA / 1\$',
+                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: 4),
+
+            // Symbol and Prix label
+            Row(
+              children: [
+                SizedBox(width: 72), // Align with name (icon width + spacing)
+                Text(
+                  asset.symbol,
+                  style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                    fontWeight: FontWeight.w600,
+                    color: Theme.of(context).colorScheme.onSurface,
+                  ),
+                ),
+                SizedBox(width: 24),
+                Text(
+                  'Prix',
+                  style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  ),
+                ),
+              ],
+            ),
+
+            SizedBox(height: 16),
+            Divider(
+              height: 1,
+              color: Theme.of(context).colorScheme.surfaceContainerHighest,
+            ),
+            SizedBox(height: 12),
+
+            // Additional info
+            _buildInfoRow(context, 'Crypto network', asset.network),
+            SizedBox(height: 8),
+            _buildInfoRow(context, 'Mobile money', asset.paymentMethod),
+            SizedBox(height: 8),
+            _buildInfoRow(context, 'Vendeur', asset.vendor),
+
+            SizedBox(height: 16),
+
+            // Bottom row: Timestamp + Actions
+            Row(
+              children: [
+                // Timestamp
+                Row(
+                  children: [
+                    Icon(
+                      Icons.access_time,
+                      size: 16,
                       color: Theme.of(context).colorScheme.onSurfaceVariant,
                     ),
-                  ),
-                  SizedBox(height: 8),
-                  Text(
-                    asset.description,
-                    maxLines: 2,
-                    overflow: TextOverflow.ellipsis,
-                    style: Theme.of(context).textTheme.bodyMedium,
-                  ),
-                ],
-              ),
+                    SizedBox(width: 4),
+                    Text(
+                      timeago.format(asset.createdAt, locale: 'en_short'),
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.onSurfaceVariant,
+                      ),
+                    ),
+                  ],
+                ),
+
+                Spacer(),
+
+                // Edit button
+                IconButton(
+                  icon: Icon(Icons.edit_outlined),
+                  iconSize: 20,
+                  color: Theme.of(context).colorScheme.onSurfaceVariant,
+                  onPressed: onEdit ?? () {},
+                  padding: EdgeInsets.all(8),
+                  constraints: BoxConstraints(),
+                ),
+
+                SizedBox(width: 8),
+
+                // Delete button
+                IconButton(
+                  icon: Icon(Icons.delete_outline),
+                  iconSize: 20,
+                  color: Theme.of(context).colorScheme.error,
+                  onPressed: onDelete ?? () {},
+                  padding: EdgeInsets.all(8),
+                  constraints: BoxConstraints(),
+                ),
+              ],
             ),
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildInfoRow(BuildContext context, String label, String value) {
+    return Row(
+      children: [
+        Text(
+          label,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurfaceVariant,
+          ),
+        ),
+        SizedBox(width: 16),
+        Text(
+          value,
+          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+            color: Theme.of(context).colorScheme.onSurface,
+            fontWeight: FontWeight.w500,
+          ),
+        ),
+      ],
     );
   }
 }

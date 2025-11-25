@@ -13,6 +13,11 @@ Asset _$AssetFromJson(Map<String, dynamic> json) => Asset(
   price: (json['price'] as num).toDouble(),
   imageUrl: json['imageUrl'] as String,
   description: json['description'] as String,
+  quantity: (json['quantity'] as num).toInt(),
+  network: json['network'] as String,
+  paymentMethod: json['paymentMethod'] as String,
+  vendor: json['vendor'] as String,
+  createdAt: DateTime.parse(json['createdAt'] as String),
 );
 
 Map<String, dynamic> _$AssetToJson(Asset instance) => <String, dynamic>{
@@ -22,4 +27,9 @@ Map<String, dynamic> _$AssetToJson(Asset instance) => <String, dynamic>{
   'price': instance.price,
   'imageUrl': instance.imageUrl,
   'description': instance.description,
+  'quantity': instance.quantity,
+  'network': instance.network,
+  'paymentMethod': instance.paymentMethod,
+  'vendor': instance.vendor,
+  'createdAt': instance.createdAt.toIso8601String(),
 };

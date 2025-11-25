@@ -83,4 +83,8 @@ class AssetController extends ChangeNotifier {
     _allAssets.removeWhere((a) => a.id == asset.id);
     search(''); // Reset filter
   }
+
+  List<Asset> getAssetsByStore(String storeId) {
+    return _allAssets.where((asset) => asset.storeId == storeId).toList();
+  }
 }

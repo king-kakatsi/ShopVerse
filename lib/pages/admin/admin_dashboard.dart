@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_verse/controllers/auth_controller.dart';
 import 'package:shop_verse/widgets/btc_price_widget.dart';
+import 'package:shop_verse/pages/admin/admin_users_page.dart';
+import 'package:shop_verse/pages/admin/admin_stores_page.dart';
+import 'package:shop_verse/pages/admin/admin_products_page.dart';
+import 'package:shop_verse/pages/admin/admin_orders_page.dart';
 
 /// Admin dashboard page
 class AdminDashboard extends StatelessWidget {
@@ -96,7 +100,11 @@ class AdminDashboard extends StatelessWidget {
                     subtitle: 'Manage all users',
                     color: Colors.blue,
                     onTap: () {
-                      // TODO: Navigate to users management
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const AdminUsersPage(),
+                        ),
+                      );
                     },
                   ),
                   _buildManagementCard(
@@ -106,7 +114,11 @@ class AdminDashboard extends StatelessWidget {
                     subtitle: 'Manage all stores',
                     color: Colors.green,
                     onTap: () {
-                      // TODO: Navigate to stores management
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const AdminStoresPage(),
+                        ),
+                      );
                     },
                   ),
                   _buildManagementCard(
@@ -116,7 +128,11 @@ class AdminDashboard extends StatelessWidget {
                     subtitle: 'Manage all products',
                     color: Colors.orange,
                     onTap: () {
-                      // TODO: Navigate to products management
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const AdminProductsPage(),
+                        ),
+                      );
                     },
                   ),
                   _buildManagementCard(
@@ -126,7 +142,11 @@ class AdminDashboard extends StatelessWidget {
                     subtitle: 'View all orders',
                     color: Colors.purple,
                     onTap: () {
-                      // TODO: Navigate to transactions
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const AdminOrdersPage(),
+                        ),
+                      );
                     },
                   ),
                 ],

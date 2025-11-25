@@ -4,6 +4,9 @@ import 'package:shop_verse/controllers/auth_controller.dart';
 import 'package:shop_verse/widgets/btc_price_widget.dart';
 import 'package:shop_verse/pages/merchant/create_store_page.dart';
 import 'package:shop_verse/pages/merchant/create_product_page.dart';
+import 'package:shop_verse/pages/merchant/merchant_stores_page.dart';
+import 'package:shop_verse/pages/merchant/merchant_products_page.dart';
+import 'package:shop_verse/pages/merchant/merchant_orders_page.dart';
 
 /// Merchant dashboard page
 class MerchantDashboard extends StatelessWidget {
@@ -135,7 +138,11 @@ class MerchantDashboard extends StatelessWidget {
                     subtitle: 'Manage your stores',
                     trailing: '0',
                     onTap: () {
-                      // TODO: Navigate to my stores
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const MerchantStoresPage(),
+                        ),
+                      );
                     },
                   ),
                   _buildSectionCard(
@@ -145,7 +152,11 @@ class MerchantDashboard extends StatelessWidget {
                     subtitle: 'Manage your products',
                     trailing: '0',
                     onTap: () {
-                      // TODO: Navigate to my products
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const MerchantProductsPage(),
+                        ),
+                      );
                     },
                   ),
                   _buildSectionCard(
@@ -155,7 +166,11 @@ class MerchantDashboard extends StatelessWidget {
                     subtitle: 'View customer orders',
                     trailing: '0',
                     onTap: () {
-                      // TODO: Navigate to orders
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (context) => const MerchantOrdersPage(),
+                        ),
+                      );
                     },
                   ),
                   _buildSectionCard(

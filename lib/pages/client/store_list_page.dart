@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shop_verse/controllers/store_controller.dart';
 import 'package:shop_verse/models/store.dart';
+import 'package:shop_verse/pages/client/store_details_page.dart';
 
 class StoreListPage extends StatelessWidget {
   const StoreListPage({super.key});
@@ -55,7 +56,11 @@ class StoreListPage extends StatelessWidget {
       elevation: 2,
       child: InkWell(
         onTap: () {
-          // TODO: Navigate to store details
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => StoreDetailsPage(store: store),
+            ),
+          );
         },
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,

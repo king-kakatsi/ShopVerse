@@ -9,8 +9,10 @@ import 'package:shop_verse/controllers/auth_controller.dart';
 import 'package:shop_verse/controllers/store_controller.dart';
 import 'package:shop_verse/controllers/cart_controller.dart';
 import 'package:shop_verse/controllers/order_controller.dart';
+import 'package:shop_verse/controllers/favorite_controller.dart';
 import 'package:shop_verse/pages/root_page.dart';
 import 'package:shop_verse/pages/auth/login_page.dart';
+import 'package:shop_verse/pages/auth/register_page.dart';
 import 'package:shop_verse/themes/app_theme.dart';
 
 void main() async {
@@ -42,6 +44,7 @@ void initGetIt() {
   getIt.registerSingleton<StoreController>(StoreController());
   getIt.registerSingleton<CartController>(CartController());
   getIt.registerSingleton<OrderController>(OrderController());
+  getIt.registerSingleton<FavoriteController>(FavoriteController());
 }
 
 /// Root application wrapper with dependency injection providers
@@ -75,6 +78,9 @@ class AppRoot extends StatelessWidget {
         ChangeNotifierProvider<OrderController>.value(
           value: getIt<OrderController>(),
         ),
+        ChangeNotifierProvider<FavoriteController>.value(
+          value: getIt<FavoriteController>(),
+        ),
       ],
       child: const MyApp(),
     );
@@ -97,6 +103,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/': (context) => const RootPage(),
         '/login': (context) => const LoginPage(),
+        '/register': (context) => const RegisterPage(),
       },
     );
   }

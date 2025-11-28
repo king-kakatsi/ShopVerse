@@ -48,6 +48,20 @@ dependencies:
   flutter_native_splash: ^2.4.7
   path_provider: ^2.1.5
   timeago: ^3.7.0
+  intl: ^0.20.2
+  # Google Maps integration
+  google_maps_flutter: ^2.10.0
+  # Geolocation services
+  geolocator: ^13.0.2
+  geocoding: ^3.0.0
+  # Firebase for notifications
+  firebase_core: ^3.8.0
+  firebase_messaging: ^15.1.4
+  firebase_auth: ^5.3.3
+  cloud_firestore: ^5.5.0
+  firebase_storage: ^12.3.5
+  # Local notifications
+  flutter_local_notifications: ^17.2.3
 
 dev_dependencies:
   flutter_test:
